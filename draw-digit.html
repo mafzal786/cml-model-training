@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+
    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
 <script type="text/javascript">
 	var canvas;
@@ -179,24 +180,58 @@
         document.execCommand("copy");
         document.body.removeChild(input);
         alert("Copied! Put this value to below inputbox using Ctrl + V.");
+        //alert(document.getElementById(elementId).value)
+
+
+
 
 
     }
+
+    function GetPrediction(elementId)
+    {
+
+    var x = {pixelarray:document.getElementById(elementId).value}
+    apikey = 'mhbg100cs7yq6xbme7dhg9ezcdde619n'
+    var reqData = Object.assign({accessKey: apikey}, {Request: x});
+
+	//alert(JSON.stringify(reqData))
+	fetch("http://modelservice.ml-f81b3d54-323.apps.ocp4.sjc02.lab.cisco.com/model", {
+	  method: "POST",
+	  headers: {
+	        'Content-Type': 'application/json'
+	        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+	  body: JSON.stringify(reqData)
+	}).then(response => response.json())
+      .then(ans => window.confirm('You have written the number: '.concat(Number(ans.response)
+        .toFixed(0).toString()
+        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")))
+      );
+
+
+}
 
 
     </script>
 </head>
 <body onload="prepareSimpleCanvas();">
+<div  class="jumbotron">
+   <h1>
+      Handwritten Digit Prediction
+
+   </h1>
+</div>
 <div class="row" style="padding-bottom: 5px">
         <div class="col-md-1"></div>
         <div  class="col-md-2">
-        <label for="comment">Draw you Number:</label><br>
-            <div class="form-group" id="canvasSimpleDiv"></div>
+        <label for="comment">Draw your Number:</label><br>
+            <div  id="canvasSimpleDiv"></div>
 
 
             <div>
-                <button class="btn btn-default btn-xs" id="clearCanvas">Clear</button>
-                <button class="btn btn-default btn-xs btn-primary" id="convertToArray">Convert</button>
+                <button class="btn btn-default btn-lg btn-secondary" id="clearCanvas" >Clear</button>
+                <button class="btn btn-default btn-lg btn-primary" id="convertToArray">Convert</button>
             </div>
         </div>
         <div class="col-md-8">
@@ -204,12 +239,12 @@
                 <label for="comment">Digit Image Pixel Array:</label><br>
                 <textarea readonly id="array" class="form-control" rows="5" style="width:500px;"></textarea>
 				<br>
-            <button class="btn btn-default btn-xs" onclick="copyToClipboard('array')">Copy Image Pixel Array in Clipboard</button>
+            <button class="btn btn-default btn-lg btn-primary" onclick="copyToClipboard('array')">Copy Image Pixel Array in Clipboard</button>
+            <button class="btn btn-default btn-lg btn-success" onclick="GetPrediction('array')">&nbsp;&nbsp;&nbsp;Predict&nbsp;&nbsp;&nbsp;</button>
             </div>
         </div>
         <div class="col-md-1"></div>
     </div>
-    <code>Note: If you cannot draw anything on canvas, make change in the code (for example, add space) and rerun it!</code>
 
 </body>
 </html>
