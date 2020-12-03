@@ -147,6 +147,7 @@
     function clearCanvas()
     {
     	context.clearRect(0, 0, canvasWidth, canvasHeight);
+    	document.getElementById("content").innerHTML="";
     }
 
     function redrawSimple() {
@@ -190,9 +191,10 @@
 
     function GetPrediction(elementId)
     {
-    apikey = '<accesskey>';
-    hostURL = '<hostURL>';		    
+
     var x = {pixelarray:document.getElementById(elementId).value}
+    apikey = 'mhbg100cs7yq6xbme7dhg9ezcdde619n'
+    hostURL = 'http://modelservice.ml-f81b3d54-323.apps.ocp4.sjc02.lab.cisco.com/model'
     var reqData = Object.assign({accessKey: apikey}, {Request: x});
 
 	//alert(JSON.stringify(reqData))
@@ -204,7 +206,7 @@
     },
 	  body: JSON.stringify(reqData)
 	}).then(response => response.json())
-      .then(ans => window.confirm('You have written the number: '.concat(Number(ans.response)
+      .then(ans => document.getElementById("content").innerHTML = ('You have written the number: '.concat(Number(ans.response)
         .toFixed(0).toString()
         .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")))
       );
@@ -245,6 +247,8 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-
+    <h1>
+      <div id="content"></div>
+	</h1>
 </body>
 </html>
