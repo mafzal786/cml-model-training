@@ -190,13 +190,13 @@
 
     function GetPrediction(elementId)
     {
-
+    apikey = '<accesskey>';
+    hostURL = '<hostURL>';		    
     var x = {pixelarray:document.getElementById(elementId).value}
-    apikey = 'mhbg100cs7yq6xbme7dhg9ezcdde619n'
     var reqData = Object.assign({accessKey: apikey}, {Request: x});
 
 	//alert(JSON.stringify(reqData))
-	fetch("http://modelservice.ml-f81b3d54-323.apps.ocp4.sjc02.lab.cisco.com/model", {
+	fetch(hostURL, {
 	  method: "POST",
 	  headers: {
 	        'Content-Type': 'application/json'
